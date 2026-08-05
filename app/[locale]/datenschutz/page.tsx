@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/lib/i18n/navigation';
+import { getSiteSettings } from '@/lib/data';
 import type { Locale } from '@/lib/i18n/routing';
 
 export async function generateMetadata({
@@ -27,6 +28,14 @@ export default async function Datenschutz({
     paragraphs: readonly string[];
   }>;
   const translationNote = t.raw('privacy.translationNote') as string;
+  // The controller's address and email must match the legal notice. t.raw skips
+  // next-intl's interpolation, so fill the placeholders here from the same source.
+  const settings = await getSiteSettings();
+  const values: Record<string, string> = {
+    address: settings.studio.address,
+    email: t('imprint.email'),
+  };
+  const fill = (text: string) => text.replace(/\{(address|email)\}/g, (_, k: string) => values[k]);
   return (
     <main className="relative z-10 mx-auto min-h-dvh max-w-2xl px-6 pb-28 pt-28">
       <Link href="/" className="underline-trail font-display text-xs uppercase tracking-brand text-white/70">
@@ -47,7 +56,7 @@ export default async function Datenschutz({
               {section.title}
             </h2>
             {section.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
+              <p key={paragraph}>{fill(paragraph)}</p>
             ))}
           </section>
         ))}

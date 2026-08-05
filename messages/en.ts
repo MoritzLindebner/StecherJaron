@@ -82,12 +82,14 @@ const messages = {
       translationNote:
         'This English version is a convenience translation. The German version is legally authoritative.',
       updated:
-        'Last updated: July 2026. We will amend this policy if the website or the legal situation changes.',
+        'Last updated: August 2026. We will amend this policy if the website or the legal situation changes.',
       sections: [
         {
           title: 'Controller',
           paragraphs: [
-            'The controller responsible for data processing on this website is: Jaron Bock, Stecher Jaron — Tattoo Studio, Firmianstraße 10, 94032 Passau, Germany, email: Tattoostudio.jaronbock@gmail.com.',
+            // {address} and {email} are filled in by datenschutz/page.tsx from the
+            // same source as the legal notice — see the German file.
+            'The controller responsible for data processing on this website is: Jaron Bock, Stecher Jaron — Tattoo Studio, {address}, Germany, email: {email}.',
             'No data protection officer has been appointed — there is no legal obligation to do so.',
           ],
         },
@@ -95,7 +97,7 @@ const messages = {
           title: 'Hosting with Netlify',
           paragraphs: [
             'This website is hosted by Netlify (Netlify, Inc., San Francisco, California, USA). When you visit the website, Netlify automatically processes server log files containing information transmitted by your browser: IP address, date and time of access, page or file requested, browser type and version, operating system, and referrer URL.',
-            'Processing is based on Art. 6 (1) (f) GDPR; our legitimate interest is the reliable and secure delivery of the website. Netlify stores the log data only briefly and then deletes it. A data processing agreement (Art. 28 GDPR) is in place with Netlify; any transfer of personal data to the USA is based on the EU Standard Contractual Clauses (Art. 46 GDPR). More information: netlify.com/privacy.',
+            'Processing is based on Art. 6 (1) (f) GDPR; our legitimate interest is the reliable and secure delivery of the website. Netlify does not publish a fixed retention period for these server log files; they are deleted once they are no longer required for secure operation. We do not analyse the log data ourselves and do not combine it with other data. A data processing agreement (Art. 28 GDPR) is in place with Netlify; any transfer of personal data to the USA is based on the EU Standard Contractual Clauses (Art. 46 GDPR). More information: netlify.com/privacy.',
           ],
         },
         {
@@ -103,6 +105,15 @@ const messages = {
           paragraphs: [
             'The content of this website (in particular photos) is managed with the content management system Sanity and delivered via its content delivery network (cdn.sanity.io) (Sanity, Inc., San Francisco, USA). When images are loaded, your IP address is transmitted to Sanity; this is technically necessary to display the content.',
             'The legal basis is Art. 6 (1) (f) GDPR (legitimate interest in performant content delivery); transfers to the USA are based on the EU Standard Contractual Clauses. More information: sanity.io/legal/privacy.',
+            'We maintain the content through the Sanity interface at /studio. That area is password-protected and excluded from search engines; it is intended solely for us as the operator. It creates no additional processing for visitors to this website.',
+          ],
+        },
+        {
+          title: 'Photos of tattoos',
+          paragraphs: [
+            'This website shows photos of tattoos on people. Such images are personal data of the person depicted, even when no face is visible. We publish them only with that person’s prior consent (Art. 6 (1) (a) GDPR as well as §§ 22, 23 KUG, the German Act on Copyright in Works of Fine Art and Photography). We do not name the people depicted.',
+            'Consent is voluntary and can be withdrawn at any time with effect for the future — an informal email to the address given above is sufficient. After a withdrawal we take the photo off this website promptly. We have no influence over copies that third parties have already made or shared on other platforms.',
+            'If you find a photo in which you recognise yourself and to which you did not consent, please contact us — we will take it offline immediately.',
           ],
         },
         {

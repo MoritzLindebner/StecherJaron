@@ -82,12 +82,14 @@ const messages = {
     privacy: {
       translationNote: '',
       updated:
-        'Stand: Juli 2026. Wir passen diese Erklärung an, wenn sich die Website oder die Rechtslage ändert.',
+        'Stand: August 2026. Wir passen diese Erklärung an, wenn sich die Website oder die Rechtslage ändert.',
       sections: [
         {
           title: 'Verantwortlicher',
           paragraphs: [
-            'Verantwortlicher für die Datenverarbeitung auf dieser Website ist: Jaron Bock, Stecher Jaron — Tattoostudio, Firmianstraße 10, 94032 Passau, E-Mail: Tattoostudio.jaronbock@gmail.com.',
+            // {address} und {email} füllt datenschutz/page.tsx aus derselben Quelle
+            // wie das Impressum — sonst laufen die beiden Seiten auseinander.
+            'Verantwortlicher für die Datenverarbeitung auf dieser Website ist: Jaron Bock, Stecher Jaron — Tattoostudio, {address}, E-Mail: {email}.',
             'Ein Datenschutzbeauftragter ist nicht bestellt — hierzu besteht keine gesetzliche Pflicht.',
           ],
         },
@@ -95,7 +97,7 @@ const messages = {
           title: 'Hosting bei Netlify',
           paragraphs: [
             'Diese Website wird bei Netlify gehostet (Netlify, Inc., San Francisco, Kalifornien, USA). Beim Aufruf der Website verarbeitet Netlify automatisch Server-Logfiles mit Informationen, die Ihr Browser übermittelt: IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seite bzw. Datei, Browsertyp und -version, Betriebssystem sowie Referrer-URL.',
-            'Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse ist die zuverlässige und sichere Auslieferung der Website. Die Logdaten werden von Netlify nur kurzzeitig gespeichert und anschließend gelöscht. Mit Netlify besteht ein Auftragsverarbeitungsvertrag (Art. 28 DSGVO); eine Übermittlung personenbezogener Daten in die USA erfolgt auf Grundlage der EU-Standardvertragsklauseln (Art. 46 DSGVO). Weitere Informationen: netlify.com/privacy.',
+            'Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse ist die zuverlässige und sichere Auslieferung der Website. Netlify veröffentlicht für diese Server-Logfiles keine feste Speicherdauer; sie werden gelöscht, sobald sie für den sicheren Betrieb nicht mehr erforderlich sind. Wir selbst werten die Logdaten nicht aus und führen sie nicht mit anderen Daten zusammen. Mit Netlify besteht ein Auftragsverarbeitungsvertrag (Art. 28 DSGVO); eine Übermittlung personenbezogener Daten in die USA erfolgt auf Grundlage der EU-Standardvertragsklauseln (Art. 46 DSGVO). Weitere Informationen: netlify.com/privacy.',
           ],
         },
         {
@@ -103,6 +105,15 @@ const messages = {
           paragraphs: [
             'Die Inhalte dieser Website (insbesondere Fotos) werden mit dem Content-Management-System Sanity verwaltet und über dessen Content Delivery Network (cdn.sanity.io) ausgeliefert (Sanity, Inc., San Francisco, USA). Beim Laden der Bilder wird Ihre IP-Adresse an Sanity übermittelt; dies ist technisch notwendig, um die Inhalte anzuzeigen.',
             'Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der performanten Bereitstellung der Inhalte); eine Übermittlung in die USA erfolgt auf Grundlage der EU-Standardvertragsklauseln. Weitere Informationen: sanity.io/legal/privacy.',
+            'Die Inhalte pflegen wir über die Sanity-Oberfläche unter /studio. Dieser Bereich ist passwortgeschützt und von Suchmaschinen ausgenommen; er richtet sich ausschließlich an uns als Betreiber. Für Besucherinnen und Besucher der Website entstehen dadurch keine zusätzlichen Verarbeitungen.',
+          ],
+        },
+        {
+          title: 'Fotos von Tätowierungen',
+          paragraphs: [
+            'Auf dieser Website zeigen wir Fotos von Tätowierungen an Menschen. Solche Aufnahmen sind personenbezogene Daten der abgebildeten Person, auch wenn kein Gesicht zu sehen ist. Wir veröffentlichen sie ausschließlich mit deren vorheriger Einwilligung (Art. 6 Abs. 1 lit. a DSGVO sowie §§ 22, 23 KUG). Namen der abgebildeten Personen nennen wir nicht.',
+            'Die Einwilligung ist freiwillig und kann jederzeit mit Wirkung für die Zukunft widerrufen werden — eine formlose E-Mail an die oben genannte Adresse genügt. Nach einem Widerruf nehmen wir das Foto zeitnah von dieser Website. Auf Kopien, die Dritte bereits angefertigt oder auf anderen Plattformen geteilt haben, haben wir keinen Einfluss.',
+            'Wenn Sie ein Foto entdecken, auf dem Sie sich erkennen und dem Sie nicht zugestimmt haben, melden Sie sich bitte bei uns — wir nehmen es umgehend offline.',
           ],
         },
         {

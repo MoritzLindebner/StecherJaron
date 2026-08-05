@@ -24,7 +24,12 @@ export default async function Impressum({
   const t = await getTranslations({ locale, namespace: 'legal' });
   const tc = await getTranslations({ locale, namespace: 'common' });
   const settings = await getSiteSettings();
-  const [imprintStreet = '', imprintCity = ''] = settings.studio.address.split(', ');
+  // Sanity holds the address as one line ("Straße 1, 12345 Ort"). Render whatever
+  // parts are there, so a missing comma does not produce an empty line.
+  const addressLines = settings.studio.address
+    .split(',')
+    .map((part) => part.trim())
+    .filter(Boolean);
   const headingClass = 'font-display text-sm uppercase tracking-brand text-white';
   return (
     <main className="relative z-10 mx-auto min-h-dvh max-w-2xl px-6 pb-28 pt-28">
@@ -41,10 +46,12 @@ export default async function Impressum({
             {t('imprint.name')}
             <br />
             {t('imprint.business')}
-            <br />
-            {imprintStreet}
-            <br />
-            {imprintCity}
+            {addressLines.map((line) => (
+              <span key={line}>
+                <br />
+                {line}
+              </span>
+            ))}
           </p>
         </section>
         <section className="space-y-3">
