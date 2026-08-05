@@ -32,5 +32,25 @@ export const tattoo = defineType({
   orderings: [
     { title: 'Reihenfolge', name: 'orderAsc', by: [{ field: 'order', direction: 'asc' }] },
   ],
-  preview: { select: { title: 'alt.de', subtitle: 'category.title', media: 'image' } },
+  preview: {
+    select: { alt: 'alt.de', category: 'category.title', media: 'image', order: 'order' },
+    prepare({ alt, category, media, order }) {
+      // The home page shows positions 1–3 before "Mehr anzeigen" (a fourth on
+      // desktop). Spelling that out here is the only place it is visible while
+      // scrolling the list — see GalleryPreview.tsx.
+      const headliner =
+        typeof order !== 'number'
+          ? 'ohne Reihenfolge — steht ganz hinten'
+          : order <= 3
+            ? '★ Headliner — auf der Startseite'
+            : order === 4
+              ? '★ Headliner — nur am Rechner sichtbar'
+              : alt || '';
+      return {
+        title: `${typeof order === 'number' ? `${order}.` : '–'} ${category || 'ohne Kategorie'}`,
+        subtitle: headliner,
+        media,
+      };
+    },
+  },
 });
