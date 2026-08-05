@@ -3,7 +3,9 @@
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
+import { UploadIcon } from '@sanity/icons';
 import { schemaTypes } from './sanity/schemas';
+import BatchUpload from './sanity/tools/BatchUpload';
 import { projectId, dataset, apiVersion } from './sanity/env';
 
 // Singletons: exactly one document, edited in place (fixed documentId). They must
@@ -45,6 +47,11 @@ export default defineConfig({
           ]),
     }),
     visionTool({ defaultApiVersion: apiVersion }),
+  ],
+  // Own tab next to "Inhalt": upload many images at once and categorise them.
+  tools: (prev) => [
+    { name: 'batch-upload', title: 'Batch-Upload', icon: UploadIcon, component: BatchUpload },
+    ...prev,
   ],
   // Hide singletons from the global "New document" menu…
   document: {
