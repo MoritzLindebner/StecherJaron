@@ -117,7 +117,22 @@
       "Bash(ffmpeg -version)",
       "Bash(node -e \"const fs=require\\('fs'\\);const b=fs.readFileSync\\('public/video/intro.mp4'\\);const head=b.subarray\\(0,4096\\).indexOf\\('moov'\\);const pos=b.indexOf\\('moov'\\);console.log\\('moov at byte:',pos,'of',b.length, head>=0?'\\(faststart OK\\)':'\\(am ENDE -> nicht faststart\\)'\\)\")",
       "Bash(git remote *)",
-      "Bash(git ls-remote *)"
+      "Bash(git ls-remote *)",
+      "PowerShell(claude plugin *)",
+      "Bash(python -c \"import graphify; print\\('ok'\\)\")",
+      "Bash(python -c \"import sys; print\\(sys.executable\\)\")",
+      "Read(//c/Users/Moritz/.local/bin/**)",
+      "Read(//c/Users/Moritz/.local/bin//**)",
+      "Bash(uv tool *)",
+      "Bash(mkdir -p graphify-out)",
+      "Bash(\"C:/Users/Moritz/AppData/Roaming/uv/tools/graphifyy/Scripts/python.exe\" -c \"import graphify,sys; open\\('graphify-out/.graphify_python','w',encoding='utf-8'\\).write\\(sys.executable\\); print\\('ok'\\)\")",
+      "Bash(pwd)",
+      "Bash(npx -y skills@latest add --help)",
+      "Bash(npx -y skills@latest add mattpocock/skills -g --skill '*' -y)",
+      "Bash(rm -rf \".claude/skills\" \".agents\")",
+      "Read(//c/Users/Moritz/.claude/skills/**)",
+      "Read(//c/Users/Moritz/.claude/plugins/**)",
+      "Read(//c/Users/Moritz/.claude/plugins/marketplaces/**)"
     ]
   }
 }
