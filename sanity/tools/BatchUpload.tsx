@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Button, Card, Flex, Grid, Inline, Select, Spinner, Stack, Text, useToast } from '@sanity/ui';
+import { Box, Button, Card, Flex, Grid, Select, Spinner, Stack, Text, useToast } from '@sanity/ui';
+import { CheckmarkCircleIcon } from '@sanity/icons';
 import { useClient } from 'sanity';
 import { apiVersion } from '../env';
 
@@ -176,10 +177,11 @@ export default function BatchUpload() {
       <Stack space={4}>
         <Stack space={3}>
           <Text weight="semibold" size={3}>
-            Batch-Upload
+            Bilder hochladen
           </Text>
           <Text size={1} muted>
-            Bilder auswählen, danach Kategorie zuweisen. Gespeichert wird erst mit dem Knopf unten.
+            Bilder auswählen, danach antippen und einer Kategorie zuweisen. Gespeichert wird erst
+            mit dem Knopf unten.
           </Text>
         </Stack>
 
@@ -209,18 +211,18 @@ export default function BatchUpload() {
         </Card>
 
         <Card
-          padding={5}
+          padding={4}
           radius={2}
           border
           tone="transparent"
-          style={{ textAlign: 'center', cursor: busy ? 'default' : 'pointer' }}
-          onClick={() => !busy && fileRef.current?.click()}
           onDragOver={(e: React.DragEvent) => e.preventDefault()}
           onDrop={(e: React.DragEvent) => {
             e.preventDefault();
             if (!busy) handleFiles(e.dataTransfer.files);
           }}
         >
+          {/* A real button, not just a drop zone: phones have no drag and drop,
+              and it opens the photo picker with multi-select. */}
           <input
             ref={fileRef}
             type="file"
@@ -237,56 +239,25 @@ export default function BatchUpload() {
               </Text>
             </Flex>
           ) : (
-            <Text muted>Bilder hierher ziehen oder klicken zum Auswählen</Text>
+            <Stack space={3}>
+              <Button
+                text={items.length ? 'Weitere Bilder auswählen' : 'Bilder auswählen'}
+                tone="primary"
+                padding={4}
+                fontSize={2}
+                style={{ width: '100%' }}
+                onClick={() => fileRef.current?.click()}
+                disabled={busy}
+              />
+              <Text size={1} muted align="center">
+                Am Rechner kannst du Bilder auch hierher ziehen.
+              </Text>
+            </Stack>
           )}
         </Card>
 
         {items.length > 0 && (
           <Stack space={3}>
-            <Flex align="center" gap={2} wrap="wrap">
-              <Text size={1}>
-                {items.length} Bilder · {selectedCount} markiert
-              </Text>
-              <Button mode="ghost" text="Alle" onClick={() => setSelection(() => true)} disabled={busy} />
-              <Button mode="ghost" text="Keins" onClick={() => setSelection(() => false)} disabled={busy} />
-              {target === PORTFOLIO && missingCategory > 0 && (
-                <Button
-                  mode="ghost"
-                  text={`Ohne Kategorie (${missingCategory})`}
-                  onClick={() => setSelection((it) => !it.categoryId)}
-                  disabled={busy}
-                />
-              )}
-              <Button
-                mode="ghost"
-                tone="critical"
-                text="Entfernen"
-                onClick={removeSelected}
-                disabled={busy || selectedCount === 0}
-              />
-            </Flex>
-
-            {target === PORTFOLIO && (
-              <Card padding={3} radius={2} shadow={1}>
-                <Stack space={3}>
-                  <Text size={1} weight="medium">
-                    Kategorie für die markierten Bilder
-                  </Text>
-                  <Inline space={2}>
-                    {categories.map((c) => (
-                      <Button
-                        key={c._id}
-                        text={c.title}
-                        tone="primary"
-                        onClick={() => assign(c._id)}
-                        disabled={busy || selectedCount === 0}
-                      />
-                    ))}
-                  </Inline>
-                </Stack>
-              </Card>
-            )}
-
             <Grid columns={[2, 3, 4, 6]} gap={2}>
               {items.map((it) => (
                 <Card
@@ -303,11 +274,32 @@ export default function BatchUpload() {
                   }
                 >
                   <Stack space={2}>
-                    <img
-                      src={`${it.url}?w=240&h=240&fit=crop&auto=format`}
-                      alt={it.filename}
-                      style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', display: 'block' }}
-                    />
+                    <div style={{ position: 'relative' }}>
+                      <img
+                        src={`${it.url}?w=240&h=240&fit=crop&auto=format`}
+                        alt={it.filename}
+                        style={{
+                          width: '100%',
+                          aspectRatio: '1',
+                          objectFit: 'cover',
+                          display: 'block',
+                          opacity: it.selected ? 0.6 : 1,
+                        }}
+                      />
+                      {/* A blue border alone is easy to miss on a phone. */}
+                      {it.selected && (
+                        <CheckmarkCircleIcon
+                          style={{
+                            position: 'absolute',
+                            top: 4,
+                            right: 4,
+                            fontSize: 28,
+                            color: 'white',
+                            filter: 'drop-shadow(0 1px 2px rgba(0,0,0,.6))',
+                          }}
+                        />
+                      )}
+                    </div>
                     {target === PORTFOLIO && (
                       <Text size={0} align="center" muted={!it.categoryId}>
                         {it.categoryId ? catTitle[it.categoryId] : 'ohne Kategorie'}
@@ -318,19 +310,68 @@ export default function BatchUpload() {
               ))}
             </Grid>
 
-            <Flex align="center" gap={3}>
-              <Button
-                text={saving ? 'Speichere …' : `${items.length} Bilder anlegen`}
-                tone="positive"
-                disabled={busy || (target === PORTFOLIO && missingCategory > 0)}
-                onClick={save}
-              />
-              {target === PORTFOLIO && missingCategory > 0 && (
-                <Text size={1} muted>
-                  Noch {missingCategory} ohne Kategorie.
-                </Text>
-              )}
-            </Flex>
+            {/* Sticks to the bottom edge: with 30 thumbnails on a phone, the
+                category buttons must stay reachable without scrolling back up. */}
+            <Card padding={3} radius={2} shadow={2} style={{ position: 'sticky', bottom: 0 }}>
+              <Stack space={3}>
+                <Flex align="center" gap={2} wrap="wrap">
+                  <Text size={1} muted>
+                    {items.length} Bilder · {selectedCount} markiert
+                  </Text>
+                  <Button mode="ghost" fontSize={1} text="Alle" onClick={() => setSelection(() => true)} disabled={busy} />
+                  <Button mode="ghost" fontSize={1} text="Keins" onClick={() => setSelection(() => false)} disabled={busy} />
+                  {target === PORTFOLIO && missingCategory > 0 && (
+                    <Button
+                      mode="ghost"
+                      fontSize={1}
+                      text={`Ohne Kategorie (${missingCategory})`}
+                      onClick={() => setSelection((it) => !it.categoryId)}
+                      disabled={busy}
+                    />
+                  )}
+                  <Button
+                    mode="ghost"
+                    fontSize={1}
+                    tone="critical"
+                    text="Entfernen"
+                    onClick={removeSelected}
+                    disabled={busy || selectedCount === 0}
+                  />
+                </Flex>
+
+                {target === PORTFOLIO && (
+                  <Flex gap={2} wrap="wrap">
+                    {categories.map((c) => (
+                      <Button
+                        key={c._id}
+                        text={c.title}
+                        tone="primary"
+                        padding={3}
+                        fontSize={2}
+                        onClick={() => assign(c._id)}
+                        disabled={busy || selectedCount === 0}
+                      />
+                    ))}
+                  </Flex>
+                )}
+
+                <Button
+                  text={
+                    saving
+                      ? 'Speichere …'
+                      : target === PORTFOLIO && missingCategory > 0
+                        ? `Noch ${missingCategory} ohne Kategorie`
+                        : `${items.length} Bilder anlegen`
+                  }
+                  tone="positive"
+                  padding={4}
+                  fontSize={2}
+                  style={{ width: '100%' }}
+                  disabled={busy || (target === PORTFOLIO && missingCategory > 0)}
+                  onClick={save}
+                />
+              </Stack>
+            </Card>
           </Stack>
         )}
       </Stack>
